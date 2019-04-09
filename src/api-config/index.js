@@ -106,6 +106,10 @@ Axios.interceptors.response.use((res) => {
         err.message = '请求超时'
         break
 
+      case 499:
+        err.message = '客户端等待时间过长'
+        break
+      
       case 500:
         err.message = '服务器内部错误'
         break
