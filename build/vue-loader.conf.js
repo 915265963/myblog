@@ -1,4 +1,5 @@
 'use strict'
+const webpack = require('webpack')
 const utils = require('./utils')
 const config = require('../config')
 const isProduction = process.env.NODE_ENV === 'production'
@@ -7,6 +8,14 @@ const sourceMapEnabled = isProduction
   : config.dev.cssSourceMap
 
 module.exports = {
+  plugins: [
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jquery: 'jquery',
+      'window.jQuery': 'jquery',
+      jQuery: 'jquery'
+    })
+  ],
   loaders: utils.cssLoaders({
     sourceMap: sourceMapEnabled,
     extract: isProduction
