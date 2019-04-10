@@ -4,7 +4,7 @@ import {Message} from 'element-ui'
 import * as $globalFun from '../utils/common.js'
 
 // 开发 url
-let baseUrl = 'http://localhost:9093/';
+let baseUrl = ' https://www.easy-mock.com/mock/5cad48af869bde77108e2bed/blog';
 
 // 生产 url
 if (process.env.NODE_ENV === 'production') {
@@ -109,7 +109,7 @@ Axios.interceptors.response.use((res) => {
       case 499:
         err.message = '客户端等待时间过长'
         break
-      
+
       case 500:
         err.message = '服务器内部错误'
         break
@@ -175,5 +175,9 @@ export default{
   // 登陆接口
   logIn(params) {
     return POST('/login', params);
+  },
+  // mock
+  mock() {
+    return Get('mock');
   }
 }
