@@ -18,13 +18,20 @@
     },
     methods: {
       mock: function() {
-        this.$api.mock().then(result => {
+        let params = {
+          name: 'xiaoming',
+          sex: 'female'
+        };
+        let data = this.$qs.stringify(params);
+        this.$api.mockData(data).then(result => {
           if(result.data || result.data!== null || result.data!= 'undefined') {
             console.log(result.data);
           }
           return result.data;
         }).then((resData) => {
           this.tableData = resData;
+        }).catch((error) => {
+          console.log(error);
         })
       }
     },

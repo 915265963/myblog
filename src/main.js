@@ -6,10 +6,13 @@ import router from './router'
 import ElementUI from 'element-ui'
 import '@/utils/rem.js'
 import 'element-ui/lib/theme-chalk/index.css'
+import qs from 'qs'
+Vue.prototype.$qs = qs;
 
 // ajax方法封装
 import api from '@/api-config'
 Vue.prototype.$api = api;
+
 
 Vue.config.productionTip = false;
 

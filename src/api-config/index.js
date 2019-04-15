@@ -2,10 +2,10 @@ import axios from 'axios'
 import router from 'vue-router'
 import {Message} from 'element-ui'
 import * as $globalFun from '../utils/common.js'
+import qs from 'qs'
 
 // 开发 url
 let baseUrl = 'https://www.easy-mock.com/mock/5cad48af869bde77108e2bed/blog';
-
 // 生产 url
 if (process.env.NODE_ENV === 'production') {
   let baseURL = "http://101.132.117.228:9094";
@@ -17,7 +17,7 @@ const Axios =axios.create({
   responseType: 'json',
   withCredentials: true, // 是否允许携带cookie
   headers: {
-'Content-Type': 'application/json;charset=UTF-8'
+'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
   }
 });
 // post 传参序列化 请求拦截器
@@ -158,6 +158,7 @@ export function Get(url, params) {
 }
 // 公共post方法
 export function POST(url, params) {
+
   return new Promise((resolve, reject) => {
     Axios.post(url, params).then(response => {
       $globalFun.default.localStorage.set('tokenTime', response.data.lastTime);
@@ -176,7 +177,7 @@ export default{
     return POST('/login', params);
   },
   // mock
-  mock() {
-    return POST('mock');
+  mockData(params) {
+    return POST('/mock', params);
   }
 }

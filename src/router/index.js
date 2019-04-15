@@ -3,49 +3,38 @@ import Router from 'vue-router'
 
 Vue.use(Router);
 
-// export default new Router({
-//   routes: [
-//     {
-//       path: '/',
-//       name: 'home',
-//       component: resolve => require(['../views/home.vue'], resolve)
-//     },
-//     {
-//       path: '/logIn',
-//       name: 'logIn',
-//       component: resolve => require(['@/views/login.vue'], resolve)
-//     },
-//     {
-//       path: '/personal',
-//       name: 'personal',
-//       component: resolve => require(['@/views/personal.vue'], resolve),
-//       meta: {
-//         requireLogin: true
-//       }
-//     }
-//   ]
-// })
-
 const Route = [
-    {
-      path: '/',
-      name: 'home',
-      // redirect: '/logIn',
-      component: resolve => require(['../views/home.vue'], resolve)
-    },
-    {
-      path: '/logIn',
-      name: 'logIn',
-      component: resolve => require(['@/views/login.vue'], resolve)
-    },
-    {
-      path: '/personal',
-      name: 'personal',
-      component: resolve => require(['@/views/personal.vue'], resolve),
-      meta: {
-        requireLogin: true
-      }
+  {
+    path: '/',
+    name: 'home',
+    // redirect: '/logIn',
+    component: resolve => require(['../views/home.vue'], resolve)
+  },
+  {
+    path: '/logIn',
+    name: 'logIn',
+    component: resolve => require(['@/views/login.vue'], resolve)
+  },
+  {
+    path: '/personal',
+    name: 'personal',
+    component: resolve => require(['@/views/personal.vue'], resolve),
+    meta: {
+      requireLogin: true
     }
+  },
+  // 兄弟组件传值
+  {
+    path: '/brother1',
+    name: 'brother1',
+    component: resolve => require(['@/views/brothers/brother1.vue'], resolve),
+  },
+  {
+    path: '/brother2',
+    name: 'brother2',
+    component: resolve => require(['@/views/brothers/brother2.vue'], resolve),
+
+  }
 
   ];
 
