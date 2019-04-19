@@ -33,7 +33,12 @@ const Route = [
     path: '/brother2',
     name: 'brother2',
     component: resolve => require(['@/views/brothers/brother2.vue'], resolve),
-
+  },
+  // 下拉刷新
+  {
+    path: '/scroll',
+    name: 'scroll',
+    component: resolve => require(['@/views/scrollToRe.vue'], resolve),
   }
 
   ];

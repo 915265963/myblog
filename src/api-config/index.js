@@ -4,6 +4,7 @@ import {Message} from 'element-ui'
 import * as $globalFun from '../utils/common.js'
 import qs from 'qs'
 
+
 // 开发 url
 let baseUrl = 'https://www.easy-mock.com/mock/5cad48af869bde77108e2bed/blog';
 // 生产 url
@@ -22,7 +23,6 @@ const Axios =axios.create({
 });
 // post 传参序列化 请求拦截器
 Axios.interceptors.request.use((config) => {
-  config.headers.common['Access-Control-Allow-Origin'] = '*';
   if (window.localStorage.getItem('token')) {
     var AUTH_TOKEN = JSON.parse(window.localStorage.getItem('token'));
     config.headers.common['Authorization'] = AUTH_TOKEN;
@@ -158,9 +158,9 @@ export function Get(url, params) {
 }
 // 公共post方法
 export function POST(url, params) {
-
+  let data = qs.stringify(params);
   return new Promise((resolve, reject) => {
-    Axios.post(url, params).then(response => {
+    Axios.post(url, data).then(response => {
       $globalFun.default.localStorage.set('tokenTime', response.data.lastTime);
       resolve(response.data);
     },err => {

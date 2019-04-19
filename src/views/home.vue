@@ -22,8 +22,8 @@
           name: 'xiaoming',
           sex: 'female'
         };
-        let data = this.$qs.stringify(params);
-        this.$api.mockData(data).then(result => {
+        // let data = this.$qs.stringify(params);
+        this.$api.mockData(params).then(result => {
           if(result.data || result.data!== null || result.data!= 'undefined') {
             console.log(result.data);
           }
