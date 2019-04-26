@@ -1,15 +1,21 @@
 <template>
-  <div class>
-    <el-container>
+  <div class="home">
+    <vheader></vheader>
+    <!-- <el-container>
     <el-header>Header</el-header>
     <el-main>Main</el-main>
     <el-footer>Footer</el-footer>
-  </el-container>
+  </el-container> -->
+
   </div>
 </template>
 
 <script>
+import vheader from '@/components/public/header.vue'
   export default {
+    components:{
+      vheader,
+    },
     name: 'HelloWorld',
     data () {
       return {
@@ -42,7 +48,7 @@
 </script>
 
 <style>
-  .el-header, .el-footer {
+  /* .el-header, .el-footer {
     background-color: #B3C0D1;
     color: #333;
     text-align: center;
@@ -74,5 +80,5 @@
 
   .el-container:nth-child(7) .el-aside {
     line-height: 320px;
-  }
+  } */
 </style>
