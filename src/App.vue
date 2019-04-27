@@ -12,6 +12,11 @@ export default {
 
 <style>
 @import "assets/style/reset.css";
+html, body {
+  height: 100%;
+  font-family: 'Microsoft YaHei';
+  position: relative;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

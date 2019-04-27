@@ -14,7 +14,19 @@
           <router-link tag="li" to="/hot">hot</router-link>
         </ul>
         <div class="headPic">
-          <span class="iconfont icon-header"></span>
+          <el-row class="block-col-2">
+            <el-col :span="12">
+              <el-dropdown>
+                <span class="el-dropdown-link">
+                  <span class="iconfont icon-header"></span>
+                </span>
+                <el-dropdown-menu slot="dropdown" class="dropdownHeader">
+                  <el-dropdown-item>个人中心</el-dropdown-item>
+                  <el-dropdown-item>退出登录</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </el-col>
+          </el-row>
         </div>
       </div>
   </div>
@@ -68,21 +80,20 @@ export default {
         background-color: #999999;
         color:#333;
       }
+      li:hover{
+        color:#333;
+        background-color: #999999;
+        cursor: pointer;
+      }
     }
     .headPic{
       float: right;
       height: 60px;
       line-height: 60px;
       .icon-header{
-        font-size:30px
-        // width: 40px;
-        // height: 40px;
-        // display: inline-block;
+        font-size:30px;
+        color:#fff;
       }
-      // .icon-header::before{
-      //   width: 40px;
-      //   height: 40px;
-      // }
     }
   }
 }
@@ -94,6 +105,10 @@ export default {
     .el-input__inner{
       border-radius: 10px;
     }
+}
+.dropdownHeader{
+  top:40px !important;
+  left: 1240px !important;
 }
 </style>
 
