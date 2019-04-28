@@ -28,7 +28,7 @@ import vfooter from '@/components/public/footer.vue'
         };
         // let data = this.$qs.stringify(params);
         this.$api.mockData(params).then(result => {
-          if(result.data || result.data!== null || result.data!= 'undefined') {
+          if(result.data || result.data!== null || result.data!== 'undefined') {
             console.log(result.data);
           }
           return result.data;

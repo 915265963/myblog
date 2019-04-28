@@ -1,6 +1,6 @@
 import axios from 'axios'
 import router from 'vue-router'
-import {Message} from 'element-ui'
+import {Message} from 'element-ui' // 引入 element ui 消息提示框
 import * as $globalFun from '../utils/common.js'
 import qs from 'qs'
 
@@ -16,9 +16,9 @@ const Axios =axios.create({
   baseURL: baseUrl,
   // timeout: 10000,
   responseType: 'json',
-  withCredentials: true, // 是否允许携带cookie
+  withCredentials: true, // 是否允许携带 cookie
   headers: {
-'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
   }
 });
 // post 传参序列化 请求拦截器
@@ -31,7 +31,7 @@ Axios.interceptors.request.use((config) => {
 }, (error) => {
   Message({
       showClose: true,
-      message: error,
+    message: error,
       type: "error.data.error.message"
   });
   return Promise.reject(error);
