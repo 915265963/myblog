@@ -1,33 +1,37 @@
 <template>
-  <div class="home">
-    <vheader></vheader>
-    <div class="content"></div>
-    <vfooter></vfooter>
+  <div>
+    <div class="home-warp">
+      <home-header class="home-head"></home-header>
+      <section class="content">
+        <router-view></router-view>
+      </section>
+      <home-footer class="home-foot"></home-footer>
+    </div>
+
   </div>
 </template>
 
 <script>
-import vheader from '@/components/public/header.vue'
-import vfooter from '@/components/public/footer.vue'
+  import homeHeader from '../components/public/header.vue';
+  import homeFooter from '../components/public/footer.vue';
   export default {
-    components:{
-      vheader,
-      vfooter,
-    },
-    name: 'HelloWorld',
-    data () {
+    data() {
       return {
-        tableData: []
+
       }
     },
+    components: {
+      homeHeader: homeHeader,
+      homeFooter: homeFooter
+    },
     methods: {
-      mock: function() {
+      // 测试接口
+      mockData() {
         let params = {
-          name: 'xiaoming',
-          sex: 'female'
+          userName: '1111',
+          password: '222222'
         };
-        // let data = this.$qs.stringify(params);
-        this.$api.mockData(params).then(result => {
+        this.$api.mock(params).then(result => {
           if(result.data || result.data!== null || result.data!== 'undefined') {
             console.log(result.data);
           }
@@ -40,19 +44,21 @@ import vfooter from '@/components/public/footer.vue'
       }
     },
     mounted() {
-      this.mock();
+      this.mockData()
     }
   }
 </script>
 
-<style lang="scss" scoped>
-.home{
-  width:100%;
-  .content{
-    width: 1200px;
-    margin: 0 auto;
-    height: 300px;
-    background-color: #ccc;
+<style scoped lang="scss">
+  .home-head {
+    margin-bottom: .6rem;
+    position: fixed;
+    top: 0;
+    left: 0;
   }
-}
+  .content {
+
+    padding: .2rem;
+    min-height: calc(100vh - 2rem);
+  }
 </style>

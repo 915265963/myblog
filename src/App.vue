@@ -24,4 +24,13 @@ html, body {
   color: #2c3e50;
   font-size: .2rem;
 }
+/* 修改滾動條樣式 */
+::-webkit-scrollbar {
+  width: 6px;
+  background-color: #181c32;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #5a76cd;
+}
 </style>

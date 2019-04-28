@@ -2,7 +2,7 @@ import axios from 'axios'
 import router from 'vue-router'
 import {Message} from 'element-ui' // 引入 element ui 消息提示框
 import * as $globalFun from '../utils/common.js'
-import qs from 'qs'
+import Qs from 'qs'
 
 
 // 开发 url
@@ -24,8 +24,7 @@ const Axios =axios.create({
 // post 传参序列化 请求拦截器
 Axios.interceptors.request.use((config) => {
   if (window.localStorage.getItem('token')) {
-    var AUTH_TOKEN = JSON.parse(window.localStorage.getItem('token'));
-    config.headers.common['Authorization'] = AUTH_TOKEN;
+    config.headers.common['Authorization'] = JSON.parse(window.localStorage.getItem('token'));
   }
   return config;
 }, (error) => {
@@ -158,7 +157,7 @@ export function Get(url, params) {
 }
 // 公共post方法
 export function POST(url, params) {
-  let data = qs.stringify(params);
+  let data = Qs.stringify(params);
   return new Promise((resolve, reject) => {
     Axios.post(url, data).then(response => {
       $globalFun.default.localStorage.set('tokenTime', response.data.lastTime);

@@ -33,17 +33,6 @@ const Route = [
     name: 'discover',
     component: resolve => require(['@/views/discover.vue'], resolve),
   },
-  // 兄弟组件传值
-  {
-    path: '/brother1',
-    name: 'brother1',
-    component: resolve => require(['@/views/brothers/brother1.vue'], resolve),
-  },
-  {
-    path: '/brother2',
-    name: 'brother2',
-    component: resolve => require(['@/views/brothers/brother2.vue'], resolve),
-  },
 
   ];
 
