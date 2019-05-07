@@ -23,6 +23,7 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   font-size: .2rem;
+  background-color: #dedede;
 }
 /* 修改滾動條樣式 */
 ::-webkit-scrollbar {
