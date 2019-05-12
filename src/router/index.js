@@ -23,23 +23,16 @@ const Route = [
       requireLogin: true
     }
   },
-  // 兄弟组件传值
   {
-    path: '/brother1',
-    name: 'brother1',
-    component: resolve => require(['@/views/brothers/brother1.vue'], resolve),
+    path: '/hot',
+    name: 'hot',
+    component: resolve => require(['@/views/hot.vue'], resolve),
   },
   {
-    path: '/brother2',
-    name: 'brother2',
-    component: resolve => require(['@/views/brothers/brother2.vue'], resolve),
+    path: '/discover',
+    name: 'discover',
+    component: resolve => require(['@/views/discover.vue'], resolve),
   },
-  // 下拉刷新
-  {
-    path: '/scroll',
-    name: 'scroll',
-    component: resolve => require(['@/views/scrollToRe.vue'], resolve),
-  }
 
   ];
 
@@ -48,7 +41,6 @@ const router = new Router({
   routes: Route,
   history: false,
   mode: 'history'
-
 });
 
 // 全局守卫  控制用户未登录状况下的加载
