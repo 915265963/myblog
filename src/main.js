@@ -14,7 +14,6 @@ import '@/utils/rem.js'
 import api from '@/api-config'
 Vue.prototype.$api = api;
 
-
 Vue.config.productionTip = false;
 
 Vue.use(ElementUI);

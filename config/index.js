@@ -10,6 +10,13 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+      "/api":{
+        target:"http://116.62.168.153:8080/GSQ-forum-web",
+        changeOrigin:true,
+        pathRewrite:{
+          '^/api':'/'
+        }
+      }
 
     },
 
