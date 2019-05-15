@@ -6,25 +6,29 @@ import Qs from 'qs'
 
 
 // 开发 url
-let baseUrl = 'https://www.easy-mock.com/mock/5cad48af869bde77108e2bed/blog';
+// let baseUrl = 'https://www.easy-mock.com/mock/5cad48af869bde77108e2bed/blog';
+let baseUrl = 'http://116.62.168.153:8080/GSQ-forum-web';
 // 生产 url
-if (process.env.NODE_ENV === 'production') {
-  let baseURL = "http://101.132.117.228:9094";
-}
+// if (process.env.NODE_ENV === 'production') {
+//   let baseURL = "http://101.132.117.228:9094";
+// }
 
 const Axios =axios.create({
-  baseURL: baseUrl,
+  // baseURL: baseUrl,
+  baseURL: process.env.API_HOST,
   // timeout: 10000,
   responseType: 'json',
   withCredentials: true, // 是否允许携带 cookie
   headers: {
-    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+    'Content-Type': 'application/json;charset=UTF-8',
+    'Accept': 'application/json'
   }
 });
-// post 传参序列化 请求拦截器
+// post 请求拦截器
 Axios.interceptors.request.use((config) => {
   if (window.localStorage.getItem('token')) {
     config.headers.common['Authorization'] = JSON.parse(window.localStorage.getItem('token'));
+
   }
   return config;
 }, (error) => {
@@ -157,9 +161,9 @@ export function Get(url, params) {
 }
 // 公共post方法
 export function POST(url, params) {
-  let data = Qs.stringify(params);
+  // let data = Qs.stringify(params);
   return new Promise((resolve, reject) => {
-    Axios.post(url, data).then(response => {
+    Axios.post(url, params).then(response => {
       $globalFun.default.localStorage.set('tokenTime', response.data.lastTime);
       resolve(response.data);
     },err => {
@@ -173,7 +177,15 @@ export function POST(url, params) {
 export default{
   // 登陆接口
   logIn(params) {
-    return POST('/login', params);
+    return POST('/login/V1.0/login', params);
+  },
+  // 注册接口
+  signIn(params) {
+    return POST('/login/V1.0/regist', params);
+  },
+  // 获取短信验证码
+  getVerCode(params) {
+    return POST('/login/V1.0/sendVerCode', params);
   },
   // mock
   mockData(params) {

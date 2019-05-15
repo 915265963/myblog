@@ -7,13 +7,10 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/icon-font/iconfont.css'
 import '@/utils/rem.js'
-// import qs from 'qs'
-// Vue.prototype.$qs = qs;
 
 // ajax方法封装
 import api from '@/api-config'
 Vue.prototype.$api = api;
-
 
 Vue.config.productionTip = false;
 
