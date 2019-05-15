@@ -13,9 +13,9 @@ export default {
 <style>
 @import "assets/style/reset.css";
 html, body {
-  height: 100%;
   font-family: 'Microsoft YaHei';
   position: relative;
+  background-color: #dedede;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
