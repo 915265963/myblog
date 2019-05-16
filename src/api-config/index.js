@@ -180,7 +180,7 @@ export default{
     return POST('/login/V1.0/login', params);
   },
   // 注册接口
-  signIn(params) {
+  signUp(params) {
     return POST('/login/V1.0/regist', params);
   },
   // 获取短信验证码

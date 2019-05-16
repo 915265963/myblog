@@ -10,49 +10,41 @@
             <div class="signIn" @click="index = 1" v-bind:class="{clicked: index === 1}">注册</div>
           </div>
         </div>
-
+<!-- 登陆部分 -->
         <div class="login-box" v-if="index === 0">
-          <el-form>
-            <el-form-item label="账号" prop="account" placeholder="请输入账号" >
-              <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+          <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm">
+            <el-form-item label="账号" prop="account">
+              <el-input type="text" v-model="ruleForm.account" autocomplete="off" placeholder="手机号" maxlength="11"></el-input>
             </el-form-item>
-            <el-form-item label="密码" prop="pass">
-              <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+            <el-form-item label="密码" prop="passWord">
+              <el-input type="password" v-model="ruleForm.passWord" autocomplete="off" placeholder="请输入密码"></el-input>
             </el-form-item>
             <div class="button-box">
               <el-form-item>
-<!--                <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>-->
-<!--                <el-button @click="resetForm('ruleForm')">重置</el-button>-->
-                <el-button @click="logIn" class="btn" type="primary" round>登&nbsp;&nbsp;录</el-button>
+                <el-button @click="submitForm('ruleForm')" class="btn" type="primary" round>登&nbsp;&nbsp;录</el-button>
                 <el-button class="btn" type="warning" round>忘记密码</el-button>
               </el-form-item>
             </div>
           </el-form>
-          <div class="button-box">
-            <el-form-item>
-              <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-              <el-button @click="resetForm('ruleForm')">重置</el-button>
-              <!--            <el-button @click="logIn" class="btn" type="primary" round>登&nbsp;&nbsp;录</el-button>-->
-              <!--            <el-button class="btn" type="warning" round>忘记密码</el-button>-->
-            </el-form-item>
-          </div>
         </div>
+<!-- 注册部分 -->
         <div class="sign-box" v-else-if="index === 1">
-          <el-input v-model="telNum" placeholder="请输入手机号" class="ipt"></el-input>
-          <el-input v-model="verificationCode" placeholder="请输入验证码" class="ipt"></el-input>
-          <div class="button-box">
-            <el-button @click="logIn" class="btn" type="primary" round>注册</el-button>
-            <el-button class="btn" round type="success">获取验证码</el-button>
-          </div>
+          <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm">
+            <el-form-item label="手机号" prop="telNum">
+              <el-input v-model="ruleForm.telNum" auto-complete="off" placeholder="请输入11位手机号" class="ipt" maxlength="11"></el-input>
+            </el-form-item>
+            <el-form-item label="验证码" prop="verificationCode">
+              <el-input v-model="ruleForm.verificationCode" auto-complete="off" placeholder="请输入6位验证码" class="ipt"></el-input>
+            </el-form-item>
+            <div class="button-box">
+              <el-form-item>
+                <el-button @click="logIn" class="btn" type="primary" round>注册</el-button>
+                <el-button class="btn" round type="success">获取验证码</el-button>
+              </el-form-item>
+            </div>
+          </el-form>
         </div>
       </div>
-
-      <el-dialog title="提示" :visible.sync="dialogVisible" width="20%">
-        <span>{{ dialogMessage }}</span>
-        <span slot="footer" class="dialog-footer">
-  </span>
-      </el-dialog>
-
     </div>
   </div>
 </template>
@@ -60,86 +52,86 @@
 <script>
   export default {
     data() {
-      var checkAge = (rule, value, callback) => {
+      // 账号 手机号 正则
+      let checkAccount = (rule, value, callback) => {
         if (!value) {
-          return callback(new Error('年龄不能为空'));
-        }
-        setTimeout(() => {
-          if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'));
-          } else {
-            if (value < 18) {
-              callback(new Error('必须年满18岁'));
-            } else {
-              callback();
-            }
+          return callback(new Error('账号不能为空'));
+        } else {
+          if (value.length < 11) {
+            return callback(new Error('手机号长度小于11位'));
+          } else if (!(/^[1][34578]\d{9}$/).test(value) || !(/^[1-9]\d*$/).test(value) || value.length !== 11) {
+            return callback(new Error('手机号填写不正确'))
           }
-        }, 1000);
+        }
+        callback();
       };
-      var validatePass = (rule, value, callback) => {
+      // 密码正则
+      let validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'));
         } else {
-          if (this.ruleForm.checkPass !== '') {
-            this.$refs.ruleForm.validateField('checkPass');
+          if (value.length < 6) {
+            callback(new Error('密码不能小于6位'));
           }
           callback();
         }
       };
-      var validatePass2 = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请再次输入密码'));
-        } else if (value !== this.ruleForm.pass) {
-          callback(new Error('两次输入密码不一致!'));
+      // 手机号正则
+      let checkTelNum = (rule, value, callback) => {
+        if(value === '') {
+          return callback(new Error('手机号不能为空'));
         } else {
-          callback();
+          if (value.length < 11) {
+
+          }
         }
       };
       return {
-        index: 0, // tab 开关
-        account: '',
-        passWord: '',
-        telNum: '',
-        verificationCode: '', // 手机验证码
-        dialogVisible: false, // 弹出错误提示框
-        dialogMessage: '这是一条信息',
+        index: 0, // tab 登录注册切换
+        loginFlag: true, // 登录按钮
+        // 正则规则
         ruleForm: {
-          pass: '',
-          checkPass: '',
-          age: ''
+          account: '', // 账号
+          passWord: '', // 密码
+          telNum: '', // 手机号
+          verificationCode: '', // 手机验证码
         },
         rules: {
-          pass: [
-            { validator: validatePass, trigger: 'blur' }
+          passWord: [
+            { validator: validatePass,trigger: 'change'}
           ],
-          checkPass: [
-            { validator: validatePass2, trigger: 'blur' }
+          account: [
+            { validator: checkAccount, trigger: 'change' }
           ],
-          age: [
-            { validator: checkAge, trigger: 'blur' }
+          telNum: [
+            { validator: checkAccount, trigger: 'change'}
           ]
         }
       }
     },
     methods: {
+      // 表单提交验证
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            this.logIn();
+            console.log('submit!')
           } else {
+            this.$message({
+              type: 'error',
+              showClose: true,
+              message: '账号或密码填写错误，请重试！'
+            });
             console.log('error submit!!');
             return false;
           }
         });
       },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      },
       // 登录
       logIn() {
         let params = {
-          account: this.account,
-          password: this.passWord
+          account: this.ruleForm.account,
+          password: this.ruleForm.passWord
         };
         this.$api.logIn(params).then(result => {
           if (result.data || result.data!== null || result.data!== 'undefined') {
@@ -149,10 +141,18 @@
         }).then((resData) => {
           switch (resData.errorCode) {
             case '1003':
-              // this.dialogVisible = true;
-              this.dialogMessage = resData.data;
-              this.$message(resData.data);
-              break
+              this.$message({
+                type: 'error',
+                showClose: true,
+                message: resData.data,
+              });
+              break;
+            case '1004':
+              this.$message({
+                type: 'success',
+                showClose: true,
+                message: resData.errorMessage
+              })
           }
         }).catch((error) => {
           console.log(error);
@@ -169,6 +169,23 @@
 
         }).catch((error) => {
           console.log(error);
+        })
+      },
+      // 注册
+      signUp() {
+        let params = {
+          account: this.ruleForm.telNum, // 注册手机号
+          verificationCode: this.ruleForm.verificationCode // 验证码
+        };
+        this.$api.signUp(params).then(result => {
+          if (result.data || result.data !== null || result.data !== 'undefined') {
+
+          }
+          return result;
+        }).then((resData) => {
+
+        }).catch((error) => {
+
         })
       }
     },
@@ -218,7 +235,7 @@
         color: #ffffff;
         display: flex;
         justify-content: center;
-        margin-bottom: 10%;
+        margin-bottom: 5%;
         .cutover-box {
           display: flex;
           .logIn, .signIn {
@@ -260,13 +277,21 @@
 </style>
 
 <style lang="scss">
-  .button-box {
-    .el-form-item {
-      width: 100% !important;
-      .el-form-item__content {
-        display: flex;
-        justify-content: space-around;
+  .login-box, .sign-box {
+    .el-form-item__label {
+      color: #fff;
+    }
+    .button-box {
+      .el-form-item {
+        width: 100% !important;
+        .el-form-item__content {
+          display: flex;
+          justify-content: space-around;
+        }
       }
     }
+  }
+  .el-icon-error, .el-message--success {
+    font-size: 16px;
   }
 </style>

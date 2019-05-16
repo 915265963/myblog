@@ -27,8 +27,8 @@ html, body {
 }
 /* 修改滾動條樣式 */
 ::-webkit-scrollbar {
-  width: 6px;
-  background-color: #181c32;
+  /*width: 6px;*/
+  /*background-color: #181c32;*/
 }
 
 ::-webkit-scrollbar-thumb {
