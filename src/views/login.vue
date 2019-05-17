@@ -11,34 +11,34 @@
           </div>
         </div>
 <!-- 登陆部分 -->
-        <div class="login-box" v-if="index === 0">
-          <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm">
+        <div class="login-box" v-show="index === 0">
+          <el-form :model="logInRuleFrom" status-icon :rules="loginRules" ref="logInRuleFrom">
             <el-form-item label="账号" prop="account">
-              <el-input type="text" v-model="ruleForm.account" autocomplete="off" placeholder="手机号" maxlength="11"></el-input>
+              <el-input type="text" v-model="logInRuleFrom.account" auto-complete="off" placeholder="手机号" maxlength="11"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="passWord">
-              <el-input type="password" v-model="ruleForm.passWord" autocomplete="off" placeholder="请输入密码"></el-input>
+              <el-input type="password" v-model="logInRuleFrom.passWord" auto-complete="off" placeholder="请输入密码"></el-input>
             </el-form-item>
             <div class="button-box">
               <el-form-item>
-                <el-button @click="submitForm('ruleForm')" class="btn" type="primary" round>登&nbsp;&nbsp;录</el-button>
-                <el-button class="btn" type="warning" round>忘记密码</el-button>
+                <el-button @click="submitForm('logInRuleFrom')" class="btn" type="primary" :loading=this.loading round>登&nbsp;&nbsp;录</el-button>
+                <el-button class="btn" type="warning" :loading=this.loading round>忘记密码</el-button>
               </el-form-item>
             </div>
           </el-form>
         </div>
 <!-- 注册部分 -->
-        <div class="sign-box" v-else-if="index === 1">
-          <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm">
+        <div class="sign-box" v-show="index === 1">
+          <el-form :model="signUpFrom" status-icon :rules="signUpRules" ref="signUpFrom">
             <el-form-item label="手机号" prop="telNum">
-              <el-input v-model="ruleForm.telNum" auto-complete="off" placeholder="请输入11位手机号" class="ipt" maxlength="11"></el-input>
+              <el-input v-model="signUpFrom.telNum" auto-complete="off" placeholder="请输入11位手机号" class="ipt" maxlength="11"></el-input>
             </el-form-item>
             <el-form-item label="验证码" prop="verificationCode">
-              <el-input v-model="ruleForm.verificationCode" auto-complete="off" placeholder="请输入6位验证码" class="ipt"></el-input>
+              <el-input v-model="signUpFrom.verificationCode" auto-complete="off" placeholder="请输入6位验证码" class="ipt" maxlength="6"></el-input>
             </el-form-item>
             <div class="button-box">
               <el-form-item>
-                <el-button @click="logIn" class="btn" type="primary" round>注册</el-button>
+                <el-button @click="submitForm('signUpFrom')" class="btn" type="primary" round>注册</el-button>
                 <el-button class="btn" round type="success">获取验证码</el-button>
               </el-form-item>
             </div>
@@ -59,14 +59,14 @@
         } else {
           if (value.length < 11) {
             return callback(new Error('手机号长度小于11位'));
-          } else if (!(/^[1][34578]\d{9}$/).test(value) || !(/^[1-9]\d*$/).test(value) || value.length !== 11) {
+          } else if (!(/^[1][34578]\d{9}$/).test(value) || !(/^[1-9]\d*$/).test(value)) {
             return callback(new Error('手机号填写不正确'))
           }
         }
         callback();
       };
       // 密码正则
-      let validatePass = (rule, value, callback) => {
+      let checkPass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'));
         } else {
@@ -82,39 +82,66 @@
           return callback(new Error('手机号不能为空'));
         } else {
           if (value.length < 11) {
-
+            callback(new Error('手机号码长度小于11位'));
+          } else if (!(/^[1][34578]\d{9}$/).test(value) || !(/^[1-9]\d*$/).test(value)) {
+            callback(new Error('手机号填写不正确'));
+          }
+        }
+      };
+      // 验证码正则
+      let checkCationCode = (rule, value, callback) => {
+        if (value === '') {
+          return callback(new Error('验证码不能为空'));
+        } else {
+          if (!(/^[0-9]*$/).test(value)) {
+            return callback(new Error('验证码应由6位数字组成'));
           }
         }
       };
       return {
         index: 0, // tab 登录注册切换
         loginFlag: true, // 登录按钮
-        // 正则规则
-        ruleForm: {
+        loading: false, // 加载
+        // 登录
+        logInRuleFrom: {
           account: '', // 账号
           passWord: '', // 密码
+        },
+        // 注册
+        signUpFrom: {
           telNum: '', // 手机号
           verificationCode: '', // 手机验证码
         },
-        rules: {
-          passWord: [
-            { validator: validatePass,trigger: 'change'}
-          ],
+        // 验证规则 登录
+        loginRules: {
           account: [
-            { validator: checkAccount, trigger: 'change' }
+            { validator: checkAccount, trigger: 'blur' }
           ],
-          telNum: [
-            { validator: checkAccount, trigger: 'change'}
+          passWord: [
+            { validator: checkPass, trigger: 'blur' }
           ]
-        }
+        },
+        // 验证规则 注册
+        signUpRules: {
+          telNum: [
+            { validator: checkTelNum, trigger: 'change' }
+          ],
+          verificationCode: [
+            { validator: checkCationCode, trigger: 'change' }
+          ],
+        },
       }
     },
     methods: {
       // 表单提交验证
       submitForm(formName) {
+        console.log(formName);
         this.$refs[formName].validate((valid) => {
+          console.log(valid);
           if (valid) {
-            this.logIn();
+            if (this.index === 0) {
+              this.logIn();
+            }
             console.log('submit!')
           } else {
             this.$message({
@@ -127,13 +154,18 @@
           }
         });
       },
+      // 重置表单
+      resetForm(formName) {
+          this.$refs[formName].resetFields();
+      },
       // 登录
       logIn() {
         let params = {
-          account: this.ruleForm.account,
-          password: this.ruleForm.passWord
+          account: this.logInRuleFrom.account,
+          password: this.logInRuleFrom.passWord
         };
         this.$api.logIn(params).then(result => {
+          this.loading = true;
           if (result.data || result.data!== null || result.data!== 'undefined') {
 
           }
@@ -146,10 +178,19 @@
                 showClose: true,
                 message: resData.data,
               });
+              this.loading = false;
               break;
             case '1004':
               this.$message({
                 type: 'success',
+                showClose: true,
+                message: resData.errorMessage
+              });
+              this.loading = false;
+              break;
+            case '1005':
+              this.$message({
+                type: 'error',
                 showClose: true,
                 message: resData.errorMessage
               })
@@ -161,12 +202,12 @@
       // 获取短信验证码
       getVerCode() {
         let params = {
-          account: this.account
+          account: this.ruleForm.telNum
         };
         this.$api.getVerCode(params).then(result => {
-
+          return result;
         }).then((resData) => {
-
+          console.log(resData);
         }).catch((error) => {
           console.log(error);
         })
@@ -187,13 +228,19 @@
         }).catch((error) => {
 
         })
-      }
+      },
     },
     created() {
 
     },
     mounted() {
 
+    },
+    watch: {
+      index: function(val, oldVal) {
+        this.resetForm('loginRuleFrom');
+        this.resetForm('signUpFrom');
+      }
     }
   }
 </script>
